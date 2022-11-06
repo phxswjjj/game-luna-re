@@ -1,4 +1,5 @@
-﻿
+﻿#Include, CaptureScreen.ahk ; assumes it's in the same folder as script
+
 #InstallKeybdHook
 
 TraceLog(msg) {
@@ -8,8 +9,13 @@ TraceLog(msg) {
 Return
 
 ^!x:: ; Control+Alt+X hotkey.
-    PixelGetColor, color, 872, 225
-    TraceLog(Format("(872, 225) is {1}", color))
+    MouseMove, 0, 0
+    PixelGetColor, color, 538, 845
+    TraceLog(Format("(538, 845) is {1}", color))
+    
+    MouseMove, 538, 845
+    FormatTime, FileDate,, MMdd_HHmmss
+    CaptureScreen(0, 1, "CaptureScreen_" FileDate ".png")
 
 Return
 

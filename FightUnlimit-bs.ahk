@@ -1,4 +1,6 @@
-﻿AppTitle := "BlueStacks App Player"
+﻿#Include, CaptureScreen.ahk ; assumes it's in the same folder as script
+
+AppTitle := "BlueStacks App Player"
 UniqueID := WinExist(AppTitle)
 if not UniqueID {
     OutputDebug, "[%AppTitle%] not found"
@@ -11,6 +13,11 @@ Return
 TraceLog(msg) {
     FormatTime, CurrentDateTime,, HH:mm:ss
     OutputDebug, [%CurrentDateTime%] %msg%
+}
+TakeScreenshot(x, y) {
+    MouseMove, x, y
+    FormatTime, FileDate,, MMdd_HHmmss
+    CaptureScreen(0, 1, "CaptureScreen_" FileDate ".png")
 }
 
 IsNoEnergy() {
@@ -35,18 +42,30 @@ SetFightRepeat() {
     {
         Return True
     }
-    Click, 649, 838
-    Sleep, 500
-    Click, 880, 342
-    Sleep, 200
-    Click, 952, 852
-    
-    Sleep, 3000
+    else if color = 0x3E4030
+    {
+        TraceLog(Format("(538, 845) is {1}, Setup Repeat", color))
+        Click, 649, 838
+        Sleep, 500
+        Click, 880, 342
+        Sleep, 200
+        Click, 952, 852
+        
+        Sleep, 3000
+    }
+    else
+    {
+        TakeScreenshot(538, 845)
+        TraceLog(Format("(538, 845) is {1}, Unknown", color))
+        Return False
+    }
+
     PixelGetColor, color, 538, 845
     If color = 0xCCFF92
     {
         Return True
     }
+    TakeScreenshot(538, 845)
     TraceLog(Format("(538, 845) is {1}", color))
     Return False
 }
